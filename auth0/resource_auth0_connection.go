@@ -264,6 +264,16 @@ func newConnection() *schema.Resource {
 							Type:     schema.TypeString,
 							Optional: true,
 						},
+
+						// custom auth options
+						"authorization_url": {
+							Type:     schema.TypeString,
+							Optional: true,
+						},
+						"token_url": {
+							Type:     schema.TypeString,
+							Optional: true,
+						}
 					},
 				},
 			},
@@ -363,6 +373,10 @@ func readConnection(d *schema.ResourceData, m interface{}) error {
 
 			// adfs
 			"adfs_server": auth0.StringValue(c.Options.AdfsServer),
+
+			// custom auth
+			"authorization_url":	auth0.StringValue(c.Options.AuthorizationURL),
+			"token_url":			auth0.StringValue(c.Options.TokenURL)
 		},
 	})
 
@@ -451,6 +465,10 @@ func buildConnection(d *schema.ResourceData) *management.Connection {
 
 			// adfs
 			AdfsServer: String(MapData(m), "adfs_server"),
+
+			// custom auth
+			AuthorizationURL: 	String(MapData(m), "authorization_url"),
+			TokenURL:			String(MapData(m), "token_url"),
 		}
 
 		List(MapData(m), "password_history").First(func(v interface{}) {

@@ -232,3 +232,38 @@ resource "auth0_connection" "sms_connection" {
 	}
 }
 `
+
+func testCustomConnection(t *testing.T) {
+	resource.Test(t, resource.TestCase{
+		Providers: map[string]terraform.ResourceProvider{
+			"auth0": Provider(),
+		},
+		Steps: []resource.TestStep{
+			resource.TestStep{
+				Config: testCustomConnectionConfig,
+				Check: resource.ComposeTestCheckFunc(
+					resource.TestCheckResourceAttr("auth0_connection.custom_connection", "name", "Acceptance-Test-Custom-Connection"),
+					resource.TestCheckResourceAttr("auth0_connection.custom_connection", "strategy", "oauth2"),
+					resource.TestCheckResourceAttr("auth0_connection.custom_connection", "options.0.authorization_url": "1231337"),
+					resource.TestCheckResourceAttr("auth0_connection.custom_connection", "options.0.token_url": "1231337"),
+				)
+			},
+		},
+	})
+}
+
+const testCustomConnectionConfig = `
+resource "auth0_connection" "custom_connection" {
+	name = "Acceptance-Test-Custom-Connection"
+	is_domain_connection = false
+	strategy = "oauth2"
+	
+	options = {
+		disable_signup = false
+		name = "custom-connection"
+		client_id     = "123456"
+		client_secret = "123456"
+		authorization_url = "1231337"
+		token_url = "1231337"
+	}
+}
