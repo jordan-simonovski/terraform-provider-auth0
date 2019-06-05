@@ -273,6 +273,10 @@ func newConnection() *schema.Resource {
 						"token_url": {
 							Type:     schema.TypeString,
 							Optional: true,
+						},
+						"scope": {
+							Type:     schema.TypeString,
+							Optional: true,
 						}
 					},
 				},
