@@ -275,7 +275,8 @@ func newConnection() *schema.Resource {
 							Optional: true,
 						},
 						"scope": {
-							Type:     schema.TypeString,
+							Type:     schema.List,
+							Elem:     &schema.Schema{Type: schema.TypeString},
 							Optional: true,
 						}
 					},
@@ -380,7 +381,8 @@ func readConnection(d *schema.ResourceData, m interface{}) error {
 
 			// custom auth
 			"authorization_url":	auth0.StringValue(c.Options.AuthorizationURL),
-			"token_url":			auth0.StringValue(c.Options.TokenURL)
+			"token_url":			auth0.StringValue(c.Options.TokenURL),
+			"scope":				c.Options.Scope,
 		},
 	})
 
@@ -473,6 +475,7 @@ func buildConnection(d *schema.ResourceData) *management.Connection {
 			// custom auth
 			AuthorizationURL: 	String(MapData(m), "authorization_url"),
 			TokenURL:			String(MapData(m), "token_url"),
+			Scope:      		Slice(MapData(m), "scope"),
 		}
 
 		List(MapData(m), "password_history").First(func(v interface{}) {
