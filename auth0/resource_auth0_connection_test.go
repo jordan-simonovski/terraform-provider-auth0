@@ -246,6 +246,7 @@ func testCustomConnection(t *testing.T) {
 					resource.TestCheckResourceAttr("auth0_connection.custom_connection", "strategy", "oauth2"),
 					resource.TestCheckResourceAttr("auth0_connection.custom_connection", "options.0.authorization_url": "1231337"),
 					resource.TestCheckResourceAttr("auth0_connection.custom_connection", "options.0.token_url": "1231337"),
+					resource.TestCheckResourceAttr("auth0_connection.custom_connection", "options.0.scope": "openid profile"),
 				)
 			},
 		},
@@ -265,5 +266,7 @@ resource "auth0_connection" "custom_connection" {
 		client_secret = "123456"
 		authorization_url = "1231337"
 		token_url = "1231337"
+		scope = "openid profile"
+		script = "function(accessToken, ctx, cb){ console.log(ctx.token) }"
 	}
 }

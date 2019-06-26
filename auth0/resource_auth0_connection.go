@@ -277,6 +277,10 @@ func newConnection() *schema.Resource {
 						"scope": {
 							Type:     schema.TypeString,
 							Optional: true,
+						},
+						"script": {
+							Type: schema.TypeString,
+							Optional: true,
 						}
 					},
 				},
